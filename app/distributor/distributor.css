@@ -7,6 +7,78 @@
   --font-serif: 'Playfair Display', 'Times New Roman', serif;
 }
 
+
+/* ─── FAQ Accordion ──────────────────────────── */
+.faq-wrapper {
+  background: linear-gradient(135deg, #0a0a1a 0%, #131322 30%, #1a1a2e 70%, #0b1120 100%);
+  padding: 60px 16px;
+}
+
+.faq-item {
+  max-width: 1300px;
+  margin: 0 auto 12px;
+  background: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.faq-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1a1a2e;
+}
+
+.faq-arrow {
+  color: #1a1a2e;
+  font-size: 12px;
+}
+
+.faq-body {
+  padding: 0 24px 20px;
+  color: #444;
+  line-height: 1.6;
+}
+
+.faq-body h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0 0 10px;
+}
+
+.faq-body h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 16px 0 6px;
+}
+
+.faq-body p {
+  margin: 0 0 12px;
+}
+
+.faq-body ul {
+  margin: 0 0 12px;
+  padding-left: 20px;
+}
+
+.faq-body li {
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+
+.faq-body strong {
+  color: #1a1a2e;
+}
 /* ─── Banner ─────────────────────────────────── */
 .distributor-page-banner {
   width: 100%;

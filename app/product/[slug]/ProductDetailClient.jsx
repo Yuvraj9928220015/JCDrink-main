@@ -1,24 +1,22 @@
-// app/product/[slug]/ProductDetailClient.jsx  ← CLIENT COMPONENT
 "use client";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import "./productDetail.css";
+import ProductDetailAccordion from "./ProductDetailAccordion";
 
 const API_BASE_URL = "https://api.jcdrink.com";
 const API_URL = `${API_BASE_URL}/api`;
 
-export default function ProductDetailClient({ slug, initialProduct }) {
+export default function ProductDetailClient({ slug, initialProduct, accordionData }) {
   const router = useRouter();
 
-  // initialProduct directly use karo — no unnecessary state churn
   const [product, setProduct] = useState(initialProduct || null);
-  const [loading, setLoading] = useState(false); // server ne data diya hai, loading false
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [selectedTab, setSelectedTab] = useState("description");
-
-  // selectedSize & currentPrice initialProduct se correctly initialize karo
+  
   const [selectedSize, setSelectedSize] = useState(
     () => initialProduct?.priceVariations?.[0]?.size ?? ""
   );
@@ -36,24 +34,22 @@ export default function ProductDetailClient({ slug, initialProduct }) {
       .replace(/\\/g, "/")
       .replace(/^\/+/, "")}`;
   };
-
-  // Scroll to top on slug change
+  
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [slug]);
-
-  // Fallback client fetch — ONLY jab initialProduct nahi aaya (rare case)
+  
   useEffect(() => {
     if (initialProduct) {
-      // Server ne data diya — update karo agar slug match nahi karta
+      
       if (initialProduct.slug !== slug) {
-        // naya slug aaya — dobara fetch karo
+        
         clientFetch();
       }
       return;
     }
     clientFetch();
-  }, [slug]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [slug]);
 
   const clientFetch = async () => {
     try {
@@ -125,7 +121,7 @@ export default function ProductDetailClient({ slug, initialProduct }) {
               onClick={() => router.push("/product")}
               className="back-btn"
             >
-              Back to Products
+              Back to Products  
             </button>
           </div>
         </div>
@@ -419,6 +415,9 @@ export default function ProductDetailClient({ slug, initialProduct }) {
             </div>
           </div>
         </div>
+
+        {/* FAQ / About Accordion */}
+        <ProductDetailAccordion data={accordionData} />
 
       </div>
     </div>

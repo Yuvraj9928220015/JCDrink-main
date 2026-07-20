@@ -8,6 +8,7 @@ const nodemailer = require('nodemailer');
 const productRoutes = require('./routes/productRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const authRoutes = require('./routes/authRoutes');
+const blogRoutes = require('./routes/blogRoutes');
 
 dotenv.config();
 const app = express();
@@ -53,7 +54,7 @@ app.get('/', (req, res) => res.send('API is running...'));
 
 // Add auth routes
 app.use('/api/auth', authRoutes);
-
+app.use('/api/blogs', blogRoutes);
 app.use('/api/products', productRoutes);
 
 app.use('/api/payment', paymentRoutes);

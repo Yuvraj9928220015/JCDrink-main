@@ -1,10 +1,9 @@
 "use client";
 
-import "./ContactSection.css";
-
-export default function ContactSection() {
+export default function ContactForm() {
     const handleSubmit = (e) => {
         e.preventDefault();
+
         console.log("Form submitted");
     };
 
@@ -16,7 +15,7 @@ export default function ContactSection() {
                         <div className="contact-grid">
 
                             <div data-aos="fade-right" className="contact-form-section">
-                                <h2 className="form-title">Leave a Message</h2>
+                                <h1 className="form-title">Contact Us – Start Your Business with JC Drink</h1>
                                 <p className="form-subtitle">
                                     We'll get back to you within one business day.
                                 </p>

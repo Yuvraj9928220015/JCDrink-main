@@ -2,7 +2,6 @@
 import { useState } from "react";
 import "./faqs.css";
 
-// ✅ Schema data
 const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -63,7 +62,6 @@ const faqData = [
     { id: 25, question: "Can I start a soft drinks distribution business in India?", answer: "Yes, the soft drink market offers strong opportunities due to consistent demand and wide consumer base.", tag: "Support" },
 ];
 
-// ✅ Sirf "-" aur "+" text icon — koi SVG nahi
 function PlusIcon({ open }) {
     return (
         <span className={`faq-icon ${open ? "faq-icon--open" : ""}`}>
@@ -97,7 +95,6 @@ export default function Faqs() {
 
     return (
         <>
-            {/* ✅ Schema */}
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
@@ -108,9 +105,7 @@ export default function Faqs() {
                 <div className="faq-container">
                     <div className="faq-header">
                         <h2 className="faq-title">Frequently Asked Questions</h2>
-                        <p className="faq-subtitle">
-                            Sabse zyada puche jaane wale sawalon ke jawab yahan milenge.
-                        </p>
+                     
                     </div>
                     <div className="faq-list">
                         {faqData.map((faq) => (
