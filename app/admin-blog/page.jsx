@@ -4,8 +4,11 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import "./admin-blog.css";
 
+const ADMIN_USERNAME = "JCDrink";
+const ADMIN_PASSWORD = "JCDrink2024";
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.jcdrink.com";
-const SITE_URL = "https://api.jcdrink.com"; 
+const SITE_URL = "https://api.jcdrink.com";
 
 const MDXEditorComponent = dynamic(
   () => import("../../components/Toolbar/MDXEditorComponent"),
@@ -17,6 +20,12 @@ function toUrlHandle(str) {
 }
 
 export default function AdminPage() {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loginUser, setLoginUser] = useState("");
+  const [loginPass, setLoginPass] = useState("");
+  const [loginError, setLoginError] = useState("");
+
   const [title, setTitle] = useState("");
   const [urlHandle, setUrlHandle] = useState("");
   const [urlHandleEdited, setUrlHandleEdited] = useState(false);
@@ -31,30 +40,59 @@ export default function AdminPage() {
   const [metaDescription, setMetaDescription] = useState("");
   const [script, setScript] = useState("");
 
-  useEffect(() => { fetchBlogs(); }, []);
+  useEffect(() => {
+    const authStatus = sessionStorage.getItem("isAdminLoggedIn");
+    if (authStatus === "true") {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetchBlogs();
+    }
+  }, [isLoggedIn]);
 
   useEffect(() => {
     if (!urlHandleEdited) setUrlHandle(toUrlHandle(title));
   }, [title, urlHandleEdited]);
 
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (loginUser === ADMIN_USERNAME && loginPass === ADMIN_PASSWORD) {
+      setIsLoggedIn(true);
+      setLoginError("");
+      sessionStorage.setItem("isAdminLoggedIn", "true");
+    } else {
+      setLoginError("Invalid Username or Password!");
+    }
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    sessionStorage.removeItem("isAdminLoggedIn");
+    setLoginUser("");
+    setLoginPass("");
+  };
+
   const fetchBlogs = () => {
-  setLoadingBlogs(true);
-  fetch(`${API_URL}/api/blogs`, { cache: "no-store" })
-    .then((res) => {
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return res.json();
-    })
-    .then((data) => {
-      console.log("Fetched blogs:", data);
-      setBlogs(Array.isArray(data) ? data : []);
-      setLoadingBlogs(false);
-    })
-    .catch((error) => {
-      console.error("Error fetching blogs:", error);
-      setBlogs([]);
-      setLoadingBlogs(false);
-    });
-};
+    setLoadingBlogs(true);
+    fetch(`${API_URL}/api/blogs`, { cache: "no-store" })
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then((data) => {
+        console.log("Fetched blogs:", data);
+        setBlogs(Array.isArray(data) ? data : []);
+        setLoadingBlogs(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching blogs:", error);
+        setBlogs([]);
+        setLoadingBlogs(false);
+      });
+  };
 
   const handleUrlChange = (e) => {
     setUrlHandle(toUrlHandle(e.target.value));
@@ -124,10 +162,64 @@ export default function AdminPage() {
     }
   };
 
+  if (!isLoggedIn) {
+    return (
+      <div className="admin-page-wrapper admin-login-wrapper">
+        <div className="admin-card admin-login-card">
+          <div className="admin-header" style={{ justifyContent: "center", borderBottom: "none", marginBottom: "16px" }}>
+            <h2>Admin Portal Login</h2>
+          </div>
+
+          {loginError && <div className="admin-login-error">{loginError}</div>}
+
+          <form onSubmit={handleLogin}>
+            <div className="admin-input-group">
+              <label>Username</label>
+              <input
+                type="text"
+                className="admin-input-field"
+                placeholder="Enter Username"
+                value={loginUser}
+                onChange={(e) => setLoginUser(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="admin-input-group">
+              <label>Password</label>
+              <input
+                type="password"
+                className="admin-input-field"
+                placeholder="Enter Password"
+                value={loginPass}
+                onChange={(e) => setLoginPass(e.target.value)}
+                required
+              />
+            </div>
+
+            <button type="submit" className="admin-submit-btn">
+              Login to Dashboard
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
+  // ==========================================
+  // 2. MAIN ADMIN DASHBOARD (IF LOGGED IN)
+  // ==========================================
   return (
     <div className="admin-page-wrapper">
-      <div className="admin-layout">
+      {/* TOP LOGOUT BAR */}
+      <div className="admin-top-bar">
+        <span>Logged in as <strong>{ADMIN_USERNAME}</strong></span>
+        <button onClick={handleLogout} className="admin-logout-btn">
+          Logout 🚪
+        </button>
+      </div>
 
+      <div className="admin-layout">
         {/* LEFT: New Blog Form */}
         <div className="admin-card">
           <div className="admin-header">
@@ -140,7 +232,6 @@ export default function AdminPage() {
               <input
                 className="admin-input-field"
                 type="text"
-               
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
@@ -158,11 +249,9 @@ export default function AdminPage() {
                   type="text"
                   value={urlHandle}
                   onChange={handleUrlChange}
-                
                   style={{ borderRadius: "0 6px 6px 0", marginBottom: 0 }}
                 />
               </div>
-           
             </div>
 
             <div className="admin-input-group">
@@ -191,7 +280,6 @@ export default function AdminPage() {
               <input
                 className="admin-input-field"
                 type="text"
-                
                 value={altTag}
                 onChange={(e) => setAltTag(e.target.value)}
               />
@@ -224,22 +312,18 @@ export default function AdminPage() {
                     <input
                       className="admin-seo-input"
                       type="text"
-                     
                       value={pageTitle}
                       onChange={(e) => setPageTitle(e.target.value)}
                     />
-                   
                   </div>
 
                   <div className="admin-seo-group">
                     <label>Meta Description</label>
                     <textarea
                       className="admin-seo-textarea"
-                   
                       value={metaDescription}
                       onChange={(e) => setMetaDescription(e.target.value)}
                     />
-                
                   </div>
 
                   <div className="admin-seo-group">
@@ -248,7 +332,6 @@ export default function AdminPage() {
                       className="admin-seo-textarea"
                       value={script}
                       onChange={(e) => setScript(e.target.value)}
-                     
                     />
                   </div>
                 </div>

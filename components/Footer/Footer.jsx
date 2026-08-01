@@ -5,7 +5,7 @@ import styles from './Footer.module.css';
 export default function Footer() {
     return (
         <footer className={styles.footer}>
-            <div className="container">
+            <div className={`container ${styles.footerContainer}`}>
                 <div className="row">
 
                     {/* Logo Section */}
@@ -49,12 +49,9 @@ export default function Footer() {
                                 <li><Link href="/product/apple-fiizi/" className={styles.footerLink}>Apple Fiizi</Link></li>
                                 <li><Link href="/product/sweet-lemon/" className={styles.footerLink}>Sweet Lemon</Link></li>
                                 <li><Link href="/product/tangy-orange/" className={styles.footerLink}>Tangy Orange</Link></li>
-
                             </ul>
                         </div>
                     </div>
-
-
 
                     {/* Contact */}
                     <div className="col-lg-3 col-md-6 col-12">
@@ -89,14 +86,9 @@ export default function Footer() {
                         <span className={styles.footerBottomLink}>
                             copyright 2026. ALL rights Reserved
                         </span>
-                        <a
-                            href="https://lensclickerdigital.com/"
-                            className={styles.footerBottomLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            Developed By lensclickerdigital.com
-                        </a>
+                        <span className={styles.footerBottomLink}>
+                            <a href="/sitemap" className={styles.footerBottomLink}>Sitemap</a> | Developed By <a href="lensclickerdigital.com" className={styles.footerBottomLink}>LenscliCkerDigital</a>
+                        </span>
                     </div>
                 </div>
 

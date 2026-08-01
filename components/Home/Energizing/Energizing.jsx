@@ -47,7 +47,6 @@ export default function Energizing() {
     // Try immediately
     forcePlay();
 
-    // Try again when page fully loads
     if (document.readyState !== "complete") {
       window.addEventListener("load", forcePlay);
       return () => window.removeEventListener("load", forcePlay);

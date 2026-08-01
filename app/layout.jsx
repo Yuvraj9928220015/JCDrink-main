@@ -25,6 +25,16 @@ export const metadata = {
     canonical: PAGE_URL,
   },
 
+  icons: {
+    icon: [
+      { url: "/logo.webp", type: "image/webp" },
+    ],
+    shortcut: ["/logo.webp"],
+    apple: [
+      { url: "/logo.webp", type: "image/webp" },
+    ],
+  },
+
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,

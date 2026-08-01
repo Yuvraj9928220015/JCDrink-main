@@ -11,43 +11,42 @@ async function fetchWithTimeout(url, timeoutMs) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
-    return await fetch(url, {
-      signal: controller.signal,
-      next: { revalidate: 3600 },
-    });
+    return await fetch(url, { signal: controller.signal });
   } finally {
     clearTimeout(timer);
   }
 }
 
-let cachedBlogs = null;
+function normalizeSlug(slug) {
+  if (!slug) return "";
+  try {
+    return decodeURIComponent(slug).trim().toLowerCase();
+  } catch {
+    return slug.trim().toLowerCase();
+  }
+}
 
 async function getAllBlogs() {
-  if (cachedBlogs) return cachedBlogs;
   if (!API_URL) return [];
-
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
       const res = await fetchWithTimeout(`${API_URL}/api/blogs`, FETCH_TIMEOUT_MS);
       if (!res.ok) throw new Error(`API responded with status ${res.status}`);
       const data = await res.json();
-      cachedBlogs = Array.isArray(data) ? data : [];
-      return cachedBlogs;
+      return Array.isArray(data) ? data : [];
     } catch (err) {
       console.error(`[blog] Attempt ${attempt}/${MAX_RETRIES} failed: ${err.message}`);
       if (attempt < MAX_RETRIES) await sleep(RETRY_DELAY_MS * attempt);
     }
   }
-  console.error("[blog] All retries failed for /api/blogs");
-  cachedBlogs = [];
-  return cachedBlogs;
+  return [];
 }
 
+// Har build me: known blogs + ek "placeholder" fallback shell page.
+// Ye placeholder hi SPA-fallback ke kaam aayega (Step 2 dekhein).
 export async function generateStaticParams() {
   try {
     const blogs = await getAllBlogs();
-    if (blogs.length === 0) return [{ slug: "placeholder" }];
-
     const validSlugs = blogs
       .map((blog) => blog.urlHandle || blog.slug)
       .filter((slug) => typeof slug === "string" && slug.trim().length > 0)
@@ -65,26 +64,30 @@ export async function generateStaticParams() {
 }
 
 async function getBlog(slug) {
-  if (!slug || slug === "placeholder") return null;
+  const normalized = normalizeSlug(slug);
+  if (!normalized || normalized === "placeholder") return null;
 
-  const blogs = await getAllBlogs();
-  const match = blogs.find((b) => (b.urlHandle || b.slug) === slug);
-  if (match) return match;
-
-  // Fallback: direct single fetch retry ke saath
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
-      const res = await fetchWithTimeout(`${API_URL}/api/blogs/${slug}`, FETCH_TIMEOUT_MS);
+      const res = await fetchWithTimeout(`${API_URL}/api/blogs/${encodeURIComponent(slug)}`, FETCH_TIMEOUT_MS);
       if (!res.ok) throw new Error(`API responded with status ${res.status}`);
       const data = await res.json();
-      if (!data || data.message === "Blog not found") return null;
+      if (!data || data.message === "Blog not found") break;
       return data;
     } catch (err) {
-      console.error(`[blog] Fallback attempt ${attempt}/${MAX_RETRIES} failed for ${slug}: ${err.message}`);
+      console.error(`[blog] Direct fetch attempt ${attempt}/${MAX_RETRIES} failed for ${slug}: ${err.message}`);
       if (attempt < MAX_RETRIES) await sleep(RETRY_DELAY_MS * attempt);
     }
   }
-  return null;
+
+  const blogs = await getAllBlogs();
+  const match = blogs.find((b) => normalizeSlug(b.urlHandle || b.slug) === normalized);
+  return match || null;
+}
+
+function resolveImageUrl(image) {
+  if (!image || typeof image !== "string") return null;
+  return image.startsWith("http") ? image : `${API_URL}${image}`;
 }
 
 export async function generateMetadata({ params }) {
@@ -93,43 +96,83 @@ export async function generateMetadata({ params }) {
 
   if (!blog) {
     return {
-      title: "Blog Not Found | JC Drink",
-      description: "This blog post does not exist.",
+      title: "JC Drink Blog",
+      description: "Beverage business tips and distributorship guide.",
     };
   }
 
   const title = blog.pageTitle || blog.title;
   const description = blog.metaDescription || blog.title;
-  const imageUrl = blog.image
-    ? blog.image.startsWith("http")
-      ? blog.image
-      : `${API_URL}${blog.image}`
-    : null;
+  const imageUrl = resolveImageUrl(blog.image);
   const canonicalUrl = `https://jcdrink.com/blog/${slug}`;
 
   return {
     title,
     description,
-    alternates: {
-      canonical: canonicalUrl,
-    },
+    keywords: blog.metaKeywords || blog.focusKeyword || undefined,
+    alternates: { canonical: canonicalUrl },
+    robots: { index: true, follow: true },
     openGraph: {
       title,
       description,
       url: canonicalUrl,
       images: imageUrl ? [{ url: imageUrl, alt: blog.altTag || blog.title }] : [],
       type: "article",
+      publishedTime: blog.createdAt,
+      modifiedTime: blog.updatedAt || blog.createdAt,
+      authors: blog.author ? [blog.author] : undefined,
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: imageUrl ? [imageUrl] : undefined,
     },
   };
+}
+
+function buildSchema(blog, slug) {
+  try {
+    if (blog.schemaMarkup) return blog.schemaMarkup;
+    if (blog.schema) return blog.schema;
+    const canonicalUrl = `https://jcdrink.com/blog/${slug}`;
+    const imageUrl = resolveImageUrl(blog.image);
+    return {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: blog.title,
+      description: blog.metaDescription || blog.title,
+      image: imageUrl ? [imageUrl] : undefined,
+      author: { "@type": "Person", name: blog.author || "JC Drink" },
+      publisher: {
+        "@type": "Organization",
+        name: "JC Drink",
+        logo: { "@type": "ImageObject", url: "https://jcdrink.com/jcDrink-logo.webp" },
+      },
+      datePublished: blog.createdAt,
+      dateModified: blog.updatedAt || blog.createdAt,
+      mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
+    };
+  } catch (err) {
+    console.error(`[blog] buildSchema failed for "${slug}":`, err.message);
+    return null;
+  }
 }
 
 export default async function Page({ params }) {
   const { slug } = await params;
   const blog = await getBlog(slug);
-  return <BlogClient initialBlog={blog} />;
+  const schema = blog ? buildSchema(blog, slug) : null;
+
+  return (
+    <>
+      {schema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      )}
+      <BlogClient initialBlog={blog} slug={slug} />
+    </>
+  );
 }

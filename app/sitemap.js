@@ -14,7 +14,7 @@ export default async function sitemap() {
     productEntries = products
       .filter((p) => p.slug)
       .map((p) => ({
-        url: `https://www.jcdrink.com/product/${p.slug}`,
+        url: `https://jcdrink.com/product/${p.slug}`,
         lastModified: new Date(p.updatedAt || p.createdAt),
         changeFrequency: "weekly",
         priority: 0.8,
@@ -39,7 +39,7 @@ export default async function sitemap() {
         seenSlugs.add(slug);
 
         return {
-          url: `https://www.jcdrink.com/blog/${slug}`,
+          url: `https://jcdrink.com/blog/${slug}`,
           lastModified: new Date(b.updatedAt || b.createdAt || Date.now()),
           changeFrequency: "weekly",
           priority: 0.7,
@@ -52,31 +52,31 @@ export default async function sitemap() {
 
   return [
     {
-      url: "https://www.jcdrink.com",
+      url: "https://jcdrink.com",
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 1,
     },
     {
-      url: "https://www.jcdrink.com/product",
+      url: "https://jcdrink.com/product",
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 0.9,
     },
     {
-      url: "https://www.jcdrink.com/about",
+      url: "https://jcdrink.com/about",
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
-      url: "https://www.jcdrink.com/contact",
+      url: "https://jcdrink.com/contact",
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
-      url: "https://www.jcdrink.com/blog",
+      url: "https://jcdrink.com/blog",
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.7,

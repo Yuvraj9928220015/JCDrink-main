@@ -6,7 +6,13 @@ import Energizing from "./Energizing/Energizing";
 import OurExpertise from "./OurExpertise/OurExpertise";
 import NFTMarketplace from "./NFTMarketplace/NFTMarketplace";
 import Nutrition from "./Nutrition/Nutrition";
+import Testimonials from "./Testimonials/Testimonials";
+import FeatureBadges from "./featureBadges/featureBadges";
+import AboutUs from "./Aboutsection/aboutUs";
+import ChooseUs from "./chooseUs/ChooseUs";
+import BestSelling from "./BestSelling/BestSelling";
 import FAQS from "./FAQS/page";
+import LatestBlog from "./LatestBlog/LatestBlog";
 
 
 const SITE_URL = "https://jcdrink.com/";
@@ -63,7 +69,7 @@ const schemaData = [
         "@context": "https://schema.org",
         "@type": "Organization",
         "@id": `${SITE_URL}/#organization`,
-        name: "Your Brand Name",
+        name: "Your Brand Name", // TODO
         url: `${SITE_URL}/`,
         logo: {
             "@type": "ImageObject",
@@ -76,9 +82,9 @@ const schemaData = [
         ],
         contactPoint: {
             "@type": "ContactPoint",
-            telephone: "+91-XXXXXXXXXX", // TODO: change
+            telephone: "+91-XXXXXXXXXX",
             contactType: "customer service",
-            email: "info@yourdomain.com", // TODO: change
+            email: "info@yourdomain.com",
             areaServed: "IN",
             availableLanguage: ["English", "Hindi"],
         },
@@ -88,7 +94,7 @@ const schemaData = [
         "@type": "WebSite",
         "@id": `${SITE_URL}/#website`,
         url: `${SITE_URL}/`,
-        name: "Your Brand Name", // TODO
+        name: "Your Brand Name",
         publisher: {
             "@id": `${SITE_URL}/#organization`,
         },
@@ -134,7 +140,6 @@ const schemaData = [
 export default function Home() {
     return (
         <>
-            {/* Dynamic JSON-LD schema rendering */}
             {schemaData.map((schema, index) => (
                 <Script
                     key={schema["@id"] || index}
@@ -149,8 +154,14 @@ export default function Home() {
             <OurExpertise />
             <Energizing />
             <Main />
+            <ChooseUs />
+            <BestSelling />
             <ContactSection />
             <Nutrition />
+            <AboutUs/>
+            <FeatureBadges />
+            <Testimonials />
+            <LatestBlog/>
             <FAQS />
         </>
     );

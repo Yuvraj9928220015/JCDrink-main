@@ -49,7 +49,7 @@ export default function BlogListPage({ initialBlogs = [] }) {
             <div className="About-title">
               <h2>Latest Blogs</h2>
             </div>
-
+{/*  */}
             {loading ? (
               <p style={{ padding: "20px" }}>Loading blogs...</p>
             ) : blogs.length === 0 ? (

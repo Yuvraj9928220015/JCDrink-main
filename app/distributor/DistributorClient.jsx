@@ -372,7 +372,10 @@ export default function Distributor() {
     message: '',
   });
   const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState({ loading: false, error: null });
   const [openIndex, setOpenIndex] = useState(null);
+
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.jcdrink.com";
 
   const toggleFaq = (index) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -382,17 +385,36 @@ export default function Distributor() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 4000);
-    setFormData({ firstName: '', lastName: '', contactNo: '', email: '', subject: '', message: '' });
+    setStatus({ loading: true, error: null });
+
+    try {
+      const res = await fetch(`${API_URL}/api/distributor`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Something went wrong.");
+      }
+
+      setSubmitted(true);
+      setStatus({ loading: false, error: null });
+      setFormData({ firstName: '', lastName: '', contactNo: '', email: '', subject: '', message: '' });
+      setTimeout(() => setSubmitted(false), 4000);
+    } catch (err) {
+      setStatus({ loading: false, error: err.message });
+    }
   };
 
   return (
     <>
       <div className="distributor-page-banner">
-        <img src="/Just-Drink-Banner.jpg" alt="Just Drink Banner" />
+        <img src="/Distributor-banner.jpeg" alt="Just Drink Banner" />
       </div>
 
       <div className="distributor-page">
@@ -536,9 +558,12 @@ export default function Distributor() {
                 </div>
 
                 <div className="form-submit-row">
-                  <button type="submit" className="submit-btn">
-                    Submit
+                  <button type="submit" className="submit-btn" disabled={status.loading}>
+                    {status.loading ? "SENDING..." : "Submit"}
                   </button>
+                  {status.error && (
+                    <p className="form-error-msg">{status.error}</p>
+                  )}
                 </div>
               </form>
             </div>

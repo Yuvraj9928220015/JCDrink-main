@@ -1,18 +1,67 @@
-/* ===========================
-   ADMIN PANEL - FULL UI
-=========================== */
-
 * {
   box-sizing: border-box;
 }
-
 
 .admin-page-wrapper {
   background: linear-gradient(135deg, #f5f0e8 0%, #faf8f5 100%);
   min-height: 100vh;
   width: 100%;
-  padding: 120px 20px 100px;
+  padding: 40px 20px 100px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Login Screen Styles */
+.admin-login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.admin-login-card {
+  max-width: 420px;
+  width: 100%;
+  margin: auto;
+}
+
+.admin-login-error {
+  background: #ffe8e8;
+  color: #d93838;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  margin-bottom: 18px;
+  border: 1px solid #f2b8b8;
+  text-align: center;
+}
+
+/* Top Navigation Bar */
+.admin-top-bar {
+  max-width: 1700px;
+  margin: 0 auto 24px auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  padding: 12px 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  border: 1px solid #f0ebe3;
+}
+
+.admin-logout-btn {
+  background: #2c2825;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.2s;
+}
+
+.admin-logout-btn:hover {
+  background: #d93838;
 }
 
 .admin-layout {
@@ -42,7 +91,6 @@
 }
 
 .admin-header h2 {
-  font-family: Georgia, serif;
   font-size: 1.5rem;
   color: #2c2825;
   margin: 0;
@@ -80,13 +128,12 @@
   box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.12);
 }
 
-
 .admin-editor-box {
   width: 100%;
   border: 1.5px solid #e8e0d5;
   border-radius: 8px;
   background: #fff;
-  height: 900px;       
+  height: 900px;      
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
@@ -95,7 +142,6 @@
 .mdxeditor-root {
   width: 100% !important;
 }
-
 
 .mdxeditor-toolbar {
   background: #faf8f5 !important;
@@ -108,7 +154,6 @@
   border-radius: 8px 8px 0 0;
 }
 
-
 .mdxeditor-root blockquote {
   font-family: Georgia, serif !important;
   font-style: italic !important;
@@ -120,7 +165,6 @@
   border-radius: 0 6px 6px 0;
 }
 
-/* Links inside MDX editor content */
 .mdxeditor-root a {
   color: #c9a96e !important;
   text-decoration: underline !important;
@@ -135,7 +179,6 @@
 .mdxeditor-root a:visited {
   color: #c9a96e !important;
 }
-
 
 .mdxeditor-root table {
   border-collapse: collapse !important;
@@ -154,7 +197,6 @@
   border: 1px solid #e0d9cf !important;
   background: #fdfcfb !important;
 }
-
 
 .mdxeditor-root table td > *,
 .mdxeditor-root table th > * {
@@ -442,7 +484,7 @@
 
 .admin-seo-input:focus {
   border-color: #c9a96e;
-  box-shadow: 0 0 0 3px #c9a96e1f
+  box-shadow: 0 0 0 3px #c9a96e1f;
 }
 
 .admin-seo-textarea {

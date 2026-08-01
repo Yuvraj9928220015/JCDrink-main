@@ -20,6 +20,16 @@
     pointer-events: none;
 }
 
+.footerContainer {
+    max-width: 1320px;
+}
+
+@media (min-width: 1400px) {
+    .footerContainer {
+        max-width: 1450px;
+    }
+}
+
 .footerSection {
     position: relative;
     z-index: 1;

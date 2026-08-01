@@ -52,7 +52,6 @@ function QuoteToggle() {
   const [activeEditor] = useCellValues(activeEditor$);
   const [isQuote, setIsQuote] = useState(false);
 
-  
   useEffect(() => {
     if (!activeEditor) return;
     return activeEditor.registerUpdateListener(({ editorState }) => {
@@ -114,7 +113,6 @@ function QuoteToggle() {
         lineHeight: 1,
       }}
     >
-      ❝
     </button>
   );
 }
