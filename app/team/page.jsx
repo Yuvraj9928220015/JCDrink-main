@@ -143,7 +143,6 @@ const ceoPoints = [
 export default function Team() {
     return (
         <>
-            {/* Dynamic JSON-LD schema rendering */}
             {schemaData.map((schema, index) => (
                 <Script
                     key={schema["@id"] || index}
@@ -157,15 +156,13 @@ export default function Team() {
                 <div className="team-container">
                     <div className="main-content">
 
-                        {/* Meet Our Team Section */}
                         <div className="section-header">
                             <h1 className="Team-heading">Meet the JC Drink Team</h1>
                             <p className="Team-section-description">
                                 Meet The Minds Behind Our Innovation And Success.
                             </p>
                         </div>
-
-                        {/* CEO Section */}
+                        
                         <div data-aos="fade-zoom-in" className="ceo-section">
                             <div className="ceo-image-container">
                                 <img

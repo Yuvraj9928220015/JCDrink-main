@@ -78,54 +78,56 @@ const FAQS = () => {
   }
 
   return (
-    <div className="faq-page-wrapper">
-      <div className="faq-container">
+    <>
+      <div className="faq-page-wrapper">
+        <div className="faq-container">
 
-        <div className={"faq-accordion " + (openSection === "about" ? "active" : "")}>
-          <button
-            type="button"
-            className="faq-accordion-header"
-            onClick={function () { toggleSection("about"); }}
-          >
-            <span>JC – About Our Soft Drinks</span>
-            <span className="faq-accordion-arrow">▾</span>
-          </button>
+          <div className={"faq-accordion " + (openSection === "about" ? "active" : "")}>
+            <button
+              type="button"
+              className="faq-accordion-header"
+              onClick={function () { toggleSection("about"); }}
+            >
+              <span>JC – About Our Soft Drinks</span>
+              <span className="faq-accordion-arrow">▾</span>
+            </button>
 
-          {openSection === "about" && (
-            <div className="faq-accordion-body">
-              {aboutContent.map(function (block, i) {
-                return <AboutBlock block={block} index={i} key={i} />;
-              })}
-            </div>
-          )}
+            {openSection === "about" && (
+              <div className="faq-accordion-body">
+                {aboutContent.map(function (block, i) {
+                  return <AboutBlock block={block} index={i} key={i} />;
+                })}
+              </div>
+            )}
+          </div>
+
+          <div className={"faq-accordion " + (openSection === "faq" ? "active" : "")}>
+            <button
+              type="button"
+              className="faq-accordion-header"
+              onClick={function () { toggleSection("faq"); }}
+            >
+              <span>Frequently Asked Questions</span>
+              <span className="faq-accordion-arrow">▾</span>
+            </button>
+
+            {openSection === "faq" && (
+              <div className="faq-accordion-body">
+                {faqList.map(function (item, i) {
+                  return (
+                    <div key={i} className="faq-qa-item">
+                      <h3 className="faq-content-h3">{i + 1}. {item.q}</h3>
+                      <p className="faq-content-p">{item.a}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
         </div>
-
-        <div className={"faq-accordion " + (openSection === "faq" ? "active" : "")}>
-          <button
-            type="button"
-            className="faq-accordion-header"
-            onClick={function () { toggleSection("faq"); }}
-          >
-            <span>Frequently Asked Questions</span>
-            <span className="faq-accordion-arrow">▾</span>
-          </button>
-
-          {openSection === "faq" && (
-            <div className="faq-accordion-body">
-              {faqList.map(function (item, i) {
-                return (
-                  <div key={i} className="faq-qa-item">
-                    <h3 className="faq-content-h3">{i + 1}. {item.q}</h3>
-                    <p className="faq-content-p">{item.a}</p>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-
       </div>
-    </div>
+    </>
   );
 };
 

@@ -23,34 +23,36 @@ const sitemapData = [
       { label: "Apple Fiizi", href: "/product/apple-fiizi/" },
       { label: "Sweet Lemon", href: "/product/sweet-lemon/" },
       { label: "Tangy Orange", href: "/product/tangy-orange/" },
-      
+
     ],
   },
 ];
 
 export default function SitemapList() {
   return (
-    <div className="sitemap-page">
-      <div className="sitemap-hero">
-        <div className="sitemap-hero-overlay">
-          <h1>SITEMAP</h1>
+    <>
+      <div className="sitemap-page">
+        <div className="sitemap-hero">
+          <div className="sitemap-hero-overlay">
+            <h1>SITEMAP</h1>
+          </div>
+        </div>
+
+        <div className="sitemap-content">
+          {sitemapData.map((section) => (
+            <div className="sitemap-column" key={section.heading}>
+              <h2 className="sitemap-heading">{section.heading}</h2>
+              <ul>
+                {section.links.map((link) => (
+                  <li key={link.href}>
+                    <Link href={link.href}>{link.label}</Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
-
-      <div className="sitemap-content">
-        {sitemapData.map((section) => (
-          <div className="sitemap-column" key={section.heading}>
-            <h2 className="sitemap-heading">{section.heading}</h2>
-            <ul>
-              {section.links.map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href}>{link.label}</Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-    </div>
+    </>
   );
 }

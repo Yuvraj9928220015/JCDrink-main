@@ -41,62 +41,64 @@ export default function BlogListPage({ initialBlogs = [] }) {
   }, [fetchBlogs]);
 
   return (
-    <div className="Blog">
-      <div className="Blog-line"></div>
-      <div className="Blog-container-Box-Image">
-        <div className="container">
-          <div className="row">
-            <div className="About-title">
-              <h2>Latest Blogs</h2>
-            </div>
-{/*  */}
-            {loading ? (
-              <p style={{ padding: "20px" }}>Loading blogs...</p>
-            ) : blogs.length === 0 ? (
-              <p style={{ padding: "20px" }}>No blogs published yet.</p>
-            ) : (
-              blogs.map((blog) => {
-                const imageSrc = blog.image
-                  ? blog.image.startsWith("http")
-                    ? blog.image
-                    : `${API_URL}${blog.image}`
-                  : "/Blog-image.png";
+    <>
+      <div className="Blog">
+        <div className="Blog-line"></div>
+        <div className="Blog-container-Box-Image">
+          <div className="container">
+            <div className="row">
+              <div className="About-title">
+                <h2>Latest Blogs</h2>
+              </div>
 
-                return (
-                  <div className="col-lg-4 col-md-4 col-sm-12 col-12" key={blog._id}>
-                    <Link href={`/blog/${blog.urlHandle}`} style={{ textDecoration: "none" }}>
-                      <div className="Blog-Section">
-                        <div className="blog-img-wrapper">
-                          <img src={imageSrc} alt={blog.altTag || blog.title} />
+              {loading ? (
+                <p style={{ padding: "20px" }}>Loading blogs...</p>
+              ) : blogs.length === 0 ? (
+                <p style={{ padding: "20px" }}>No blogs published yet.</p>
+              ) : (
+                blogs.map((blog) => {
+                  const imageSrc = blog.image
+                    ? blog.image.startsWith("http")
+                      ? blog.image
+                      : `${API_URL}${blog.image}`
+                    : "/Blog-image.png";
+
+                  return (
+                    <div className="col-lg-4 col-md-4 col-sm-12 col-12" key={blog._id}>
+                      <Link href={`/blog/${blog.urlHandle}`} style={{ textDecoration: "none" }}>
+                        <div className="Blog-Section">
+                          <div className="blog-img-wrapper">
+                            <img src={imageSrc} alt={blog.altTag || blog.title} />
+                          </div>
+                          <div className="blog-content">
+                            <div className="blog-meta">
+                              <span>{blog.author}</span>
+                              <span>
+                                {new Date(blog.createdAt).toLocaleDateString("en-US", {
+                                  month: "short",
+                                  day: "numeric",
+                                  year: "numeric",
+                                })}
+                              </span>
+                            </div>
+                            <div className="Blog-title">{blog.title}</div>
+                            <div className="Blog-des">
+                              {blog.metaDescription || stripHtml(blog.content)}
+                            </div>
+                            <div className="blog-btn">
+                              <span>Read More →</span>
+                            </div>
+                          </div>
                         </div>
-                        <div className="blog-content">
-                          <div className="blog-meta">
-                            <span>{blog.author}</span>
-                            <span>
-                              {new Date(blog.createdAt).toLocaleDateString("en-US", {
-                                month: "short",
-                                day: "numeric",
-                                year: "numeric",
-                              })}
-                            </span>
-                          </div>
-                          <div className="Blog-title">{blog.title}</div>
-                          <div className="Blog-des">
-                            {blog.metaDescription || stripHtml(blog.content)}
-                          </div>
-                          <div className="blog-btn">
-                            <span>Read More →</span>
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  </div>
-                );
-              })
-            )}
+                      </Link>
+                    </div>
+                  );
+                })
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

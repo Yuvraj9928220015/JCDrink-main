@@ -57,12 +57,10 @@ export default function BestSelling() {
                     <h2>best-selling products. </h2>
                 </div>
 
-                {/* Product Slider */}
                 <div className="bestselling-slider-viewport">
                     <div className="bestselling-track">
                         {loopProducts.map((product, idx) => (
                             <div className="product-card" key={`${product.id}-${idx}`}>
-                                {/* Product Image */}
                                 <div className="product-img-wrapper">
                                     <img
                                         src={product.img}

@@ -1,4 +1,4 @@
-/* ===================== FEATURE BADGES ===================== */
+/* ==== FEATURE BADGES ==== */
 .fb-badges-section {
     width: 100%;
     padding: 24px 20px;
@@ -28,7 +28,7 @@
 }
 
 .fb-badge-card:hover {
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 6px 16px #0000000f;
     transform: translateY(-2px);
 }
 
@@ -60,7 +60,7 @@
     line-height: 1.3;
 }
 
-/* ===================== RESPONSIVE ===================== */
+/* ==== RESPONSIVE ==== */
 @media (max-width: 900px) {
     .fb-badges-container {
         grid-template-columns: repeat(2, 1fr);

@@ -163,7 +163,6 @@ export default function Testimonials() {
                     </div>
                 </div>
 
-                {/* Dots (only TOTAL dots for real slides) */}
                 <div className="testimonials-dots">
                     {testimonialsData.map((_, index) => (
                         <button

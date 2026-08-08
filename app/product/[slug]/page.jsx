@@ -59,7 +59,6 @@ const productSEO = {
     canonical:
       "https://jcdrink.com/product/cola-drink",
 
-    
     h1: "Refreshing Cola Drink – Affordable Cola Cold Drink in India",
   },
 
@@ -73,7 +72,6 @@ const productSEO = {
     canonical:
       "https://jcdrink.com/product/clear-lemon",
 
-   
     h1: "Refreshing Clear Lemon Drink – Lemon Soft Drink in India",
   },
 
@@ -86,7 +84,6 @@ const productSEO = {
 
     canonical:
       "https://jcdrink.com/product/energy-drink",
-
     
     h1: "Best Energy Drink in India – Healthy & Instant Boost",
   },
@@ -100,7 +97,6 @@ const productSEO = {
 
     canonical:
       "https://jcdrink.com/product/tangy-orange",
-
     
     h1: "Sip Tangy Orange – Refreshing Orange Drink Online in India",
   },

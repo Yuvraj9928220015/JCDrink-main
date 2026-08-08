@@ -61,51 +61,53 @@ export default function LatestBlog() {
   }
 
   return (
-    <section className="latest-blog-wrapper">
-      <h2 className="latest-blog-heading">Latest Blogs</h2>
+    <>
+      <section className="latest-blog-wrapper">
+        <h2 className="latest-blog-heading">Latest Blogs</h2>
 
-      <div className="latest-blog-grid">
-        {blogs.map((blog) => {
-          const identifier = blog.urlHandle || blog.slug;
-          const imgSrc = blog.image
-            ? blog.image.startsWith("http")
-              ? blog.image
-              : `${API_URL}${blog.image}`
-            : "/placeholder-blog.jpg";
-          const excerpt = stripMarkdown(blog.content).slice(0, 140);
+        <div className="latest-blog-grid">
+          {blogs.map((blog) => {
+            const identifier = blog.urlHandle || blog.slug;
+            const imgSrc = blog.image
+              ? blog.image.startsWith("http")
+                ? blog.image
+                : `${API_URL}${blog.image}`
+              : "/placeholder-blog.jpg";
+            const excerpt = stripMarkdown(blog.content).slice(0, 140);
 
-          return (
-            <Link
-              href={`/blog/${identifier}`}
-              key={blog._id}
-              className="latest-blog-card"
-            >
-              <div className="latest-blog-card-image">
-                <img src={imgSrc} alt={blog.altTag || blog.title} />
-              </div>
-              <div className="latest-blog-card-body">
-                <div className="latest-blog-card-meta">
-                  <span>{blog.author}</span>
-                  <span>
-                    {new Date(blog.createdAt).toLocaleDateString("en-US", {
-                      month: "long",
-                      day: "numeric",
-                      year: "numeric",
-                    })}
-                  </span>
+            return (
+              <Link
+                href={`/blog/${identifier}`}
+                key={blog._id}
+                className="latest-blog-card"
+              >
+                <div className="latest-blog-card-image">
+                  <img src={imgSrc} alt={blog.altTag || blog.title} />
                 </div>
-                <h3>{blog.title}</h3>
-                <p>{excerpt}...</p>
-                <span className="latest-blog-read-more">Read More →</span>
-              </div>
-            </Link>
-          );
-        })}
-      </div>
+                <div className="latest-blog-card-body">
+                  <div className="latest-blog-card-meta">
+                    <span>{blog.author}</span>
+                    <span>
+                      {new Date(blog.createdAt).toLocaleDateString("en-US", {
+                        month: "long",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                    </span>
+                  </div>
+                  <h3>{blog.title}</h3>
+                  <p>{excerpt}...</p>
+                  <span className="latest-blog-read-more">Read More →</span>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
 
-      <div className="latest-blog-view-all">
-        <Link href="/blog">View All Blogs →</Link>
-      </div>
-    </section>
+        <div className="latest-blog-view-all">
+          <Link href="/blog">View All Blogs →</Link>
+        </div>
+      </section>
+    </>
   );
 }

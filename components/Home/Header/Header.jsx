@@ -72,7 +72,6 @@ export default function Header() {
                 key={index}
                 className={`Header-slide ${index === currentSlide ? "active" : ""}`}
               >
-                {/* Using Next.js <Image> for optimization */}
                 <Image
                   src={imageSrc}
                   alt={`Slide ${index + 1}`}
